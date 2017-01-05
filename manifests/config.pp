@@ -44,7 +44,7 @@ class prometheus::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('prometheus/prometheus.sysv.erb')
+          content => template('prometheus/prometheus.sysv.erb'),
         }
       }
       'debian' : {
@@ -52,7 +52,7 @@ class prometheus::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('prometheus/prometheus.debian.erb')
+          content => template('prometheus/prometheus.debian.erb'),
         }
       }
       'sles' : {
@@ -60,7 +60,7 @@ class prometheus::config(
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('prometheus/prometheus.sles.erb')
+          content => template('prometheus/prometheus.sles.erb'),
         }
       }
       'launchd' : {
@@ -68,7 +68,7 @@ class prometheus::config(
           mode    => '0644',
           owner   => 'root',
           group   => 'wheel',
-          content => template('prometheus/prometheus.launchd.erb')
+          content => template('prometheus/prometheus.launchd.erb'),
         }
       }
       default : {
