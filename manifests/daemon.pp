@@ -23,7 +23,7 @@ define prometheus::daemon (
   ) {
     case $install_method {
       'url': {
-        include staging
+        include ::staging
         $staging_file = "${name}-${version}.${download_extension}"
         $binary = "${::staging::path}/${name}-${version}.${os}-${arch}/${name}"
         staging::file { $staging_file:
