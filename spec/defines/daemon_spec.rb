@@ -35,7 +35,7 @@ describe 'prometheus::daemon' do
     let(:params) { default_params }
 
     it do
-      is_expected.to contain_service('node_exporter').with('ensure' => true,'enable' => true)
+      is_expected.to contain_service('node_exporter').with('ensure' => true, 'enable' => true)
     end
   end
 
@@ -43,7 +43,7 @@ describe 'prometheus::daemon' do
     let(:params) { default_params }
 
     it do
-      is_expected.to contain_file('/usr/local/bin/node_exporter').with('ensure' => 'link','target' => '/opt/staging/node_exporter-0.13.0.linux-amd64/node_exporter')
+      is_expected.to contain_file('/usr/local/bin/node_exporter').with('ensure' => 'link', 'target' => '/opt/staging/node_exporter-0.13.0.linux-amd64/node_exporter')
     end
   end
 
