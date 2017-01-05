@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "prometheus::daemon" do
+describe 'prometheus::daemon' do
   let :title do
     'node_exporter'
   end
@@ -25,9 +25,9 @@ describe "prometheus::daemon" do
       service_ensure: true,
       service_enable: true,
       manage_service: true,
-      real_download_url: "https://github.com/prometheus/node_exporter/releases/download/v0.13.0/node_exporter-0.13.0.linux-amd64.tar.gz",
+      real_download_url: 'https://github.com/prometheus/node_exporter/releases/download/v0.13.0/node_exporter-0.13.0.linux-amd64.tar.gz',
       package_name: 'node_exporter',
-      package_ensure: false,
+      package_ensure: false
     }
   end
 
@@ -35,10 +35,7 @@ describe "prometheus::daemon" do
     let(:params) { default_params }
 
     it do
-      should contain_service('node_exporter').with({
-        'ensure' => true,
-        'enable' => true,
-      })
+      is_expected.to contain_service('node_exporter').with('ensure' => true,'enable' => true)
     end
   end
 
@@ -46,10 +43,7 @@ describe "prometheus::daemon" do
     let(:params) { default_params }
 
     it do
-      should contain_file('/usr/local/bin/node_exporter').with({
-        'ensure' => 'link',
-        'target' => '/opt/staging/node_exporter-0.13.0.linux-amd64/node_exporter'
-      })
+      is_expected.to contain_file('/usr/local/bin/node_exporter').with('ensure' => 'link','target' => '/opt/staging/node_exporter-0.13.0.linux-amd64/node_exporter')
     end
   end
 
@@ -57,12 +51,8 @@ describe "prometheus::daemon" do
     let(:params) { default_params }
 
     it do
-      should contain_user('node_exporter').with({
-        'ensure' => 'present',
-      })
-      should contain_group('node_exporter').with({
-        'ensure' => 'present',
-      })
+      is_expected.to contain_user('node_exporter').with('ensure' => 'present')
+      is_expected.to contain_group('node_exporter').with('ensure' => 'present')
     end
   end
 end
