@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'prometheus::node_exporter' do
   let :default_facts do
-    {
-       'operatingsystem' => 'CentOS',
-       'osfamily' => 'Redhat',
-       'operatingsystemrelease' => '7.0',
-       'architecture' => 'amd64',
-       'kernel' => 'Linux'
+    {  
+      'operatingsystem' => 'CentOS',
+      'osfamily' => 'Redhat',
+      'operatingsystemrelease' => '7.0',
+      'architecture' => 'amd64',
+      'kernel' => 'Linux'
     }
   end
 
