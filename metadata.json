@@ -2,7 +2,7 @@
   "author": "Virgil Chereches",
   "dependencies": [{"name":"puppetlabs/stdlib","version_requirement":">= 4.6.0 <5.0.0"},
     {"name":"nanliu/staging","version_requirement":">=0.4.0 <2.0.0"}],
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "name": "brutus777-prometheus",
   "operatingsystem_support": [
   	{
@@ -19,5 +19,5 @@
   "source": "https://github.com/brutus333/puppet-prometheus",
   "summary": "Prometheus Puppet module",
   "tags": [],
-  "version": "0.2.00"
+  "version": "0.2.0"
 }
