@@ -15,7 +15,7 @@ class prometheus::install
   }
   case $::prometheus::install_method {
     'url': {
-      include staging
+      include ::staging
       staging::file { "prometheus-${prometheus::version}.${prometheus::download_extension}":
         source => $prometheus::real_download_url,
       } ->
