@@ -14,20 +14,11 @@ describe 'prometheus::node_exporter' do
   context 'uses the correct binary path for version' do
     let(:facts) { default_facts }
 
-    let(:params) { { version => '0.10.0', arch => 'amd64', os => 'linux' } }
+    let(:params) { version => '0.13.0', arch => 'amd64', os => 'linux' }
 
     it do
-      is_expected.to contain_file('/usr/local/bin/node_exporter').with('target' => '/opt/staging/node_exporter-0.10.0.linux-amd64/node_exporter')
+      is_expected.to contain_file('/usr/local/bin/node_exporter').with('target' => '/opt/staging/node_exporter-0.13.0.linux-amd64/node_exporter')
     end
   end
 
-  context 'uses the correct binary path for version' do
-    let(:facts) { default_facts }
-
-    let(:params) { { version => '0.10.0', arch => 'amd64', os => 'linux' } }
-
-    it do
-      is_expected.to contain_file('/usr/local/bin/node_exporter').with('target' => '/opt/staging/node_exporter-0.10.0.linux-amd64/node_exporter')
-    end
-  end
 end
