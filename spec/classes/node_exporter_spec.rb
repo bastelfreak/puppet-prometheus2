@@ -4,11 +4,13 @@ describe 'prometheus::node_exporter' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts
+        facts.merge({
+          :staging_http_get => 'curl'
+        })
       end
 
       context 'with version specified' do
-        let(:params) do 
+        let(:params) do
           {
             version: '0.13.0',
             arch: 'amd64',
