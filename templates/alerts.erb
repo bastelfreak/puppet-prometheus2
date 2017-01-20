@@ -1,0 +1,15 @@
+<% @alerts.sort!{ |a,b| b[:name] <=> a[:name] }.each do |alert| -%>
+ALERT <%= alert['name'] %>
+    IF <%= alert['condition'] %>
+    FOR <%= alert['timeduration'] %>
+    LABELS {
+    <% alert['labels'].sort.each do |key, value| -%>
+      <%= key %> = "<%= value %>",
+    <% end -%>
+    }
+    ANNOTATIONS {
+    <% alert['annotations'].sort.each do |key, value| -%>
+      <%= key %> = "<%= value %>",
+    <% end -%>
+    }
+<% end -%>

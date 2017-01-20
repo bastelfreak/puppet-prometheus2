@@ -8,19 +8,20 @@
 #  [*alerts*]
 #  Array of alerts (see README)
 #
+#  [*alertfile_name*]
+#  The name of the file
 class prometheus::alerts (
-  String $location,
-  Array  $alerts,
-  String $alertfile_name  = 'alert.rules'
+  $location,
+  $alerts = [],
+  $alertfile_name  = 'alert.rules'
 ) inherits prometheus::params {
 
     if $alerts != [] {
-        file{ "${location}/${alertfile_name}":
+        file { "${location}/${alertfile_name}":
                 ensure  => 'file',
                 owner   => $prometheus::user,
                 group   => $prometheus::group,
-                content => epp("${module_name}/alerts.epp"),
+                content => template('prometheus/alerts.erb'),
         }
     }
-
 }
