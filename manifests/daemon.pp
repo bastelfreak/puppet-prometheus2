@@ -163,5 +163,11 @@ define prometheus::daemon (
       name   => $init_selector,
       enable => $service_enable,
     }
+    if $manage_user == true {
+      User[$user] -> Service[$name]
+    }
+    if $manage_group == true {
+      Group[$group] -> Service[$name]
+    }
   }
 }
