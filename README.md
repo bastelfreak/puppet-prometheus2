@@ -66,16 +66,10 @@ alertrules:
         condition:  'up == 0'
         timeduration: '5m'
         labels:
-            -
-                name: 'severity'
-                content: 'critical'
+            - severity: 'critical'
         annotations:
-            -
-                name: 'summary'
-                content: 'Instance {{ $labels.instance }} down'
-            -
-                name: 'description'
-                content: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
+            - summary: 'Instance {{ $labels.instance }} down'
+            - description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
 
 ```
 
@@ -111,4 +105,3 @@ In version 0.1.14 of this module the alertmanager was configured to run as the s
 Do not use version 1.0.0 of Prometheus: https://groups.google.com/forum/#!topic/prometheus-developers/vuSIxxUDff8 ; it does break the compatibility with thus module!
 
 Even if the module has templates for several linux distributions, only RH family distributions were tested.
-
