@@ -5,8 +5,24 @@ class prometheus::config(
   $rule_files,
   $scrape_configs,
   $purge = true,
-  $config_template = $::prometheus::params::config_template,
+  $config_source        = $::prometheus::params::config_source,
+  $config_template      = $::prometheus::params::config_template,
+  $config_type          = $::prometheus::params::config_type,
 ) {
+
+  case $config_type {
+    'template': {
+      $_config_template = $config_template
+      $_config_source = undef
+    }
+    'source': {
+      $_config_source = $config_source
+      $_config_template = undef
+    }
+    default: {
+      fail("Config file type ${config_type} is not supported by this module")
+    }
+  }
 
   if $prometheus::init_style {
 
@@ -84,13 +100,28 @@ class prometheus::config(
     purge   => $purge,
     recurse => $purge,
   }
-  -> file { 'prometheus.yaml':
-    ensure  => present,
-    path    => "${prometheus::config_dir}/prometheus.yaml",
-    owner   => $prometheus::user,
-    group   => $prometheus::group,
-    mode    => $prometheus::config_mode,
-    content => template($config_template),
+
+  if $_config_source != undef {
+    file { 'prometheus.yaml':
+      ensure  => file,
+      path    => "${prometheus::config_dir}/prometheus.yaml",
+      owner   => $prometheus::user,
+      group   => $prometheus::group,
+      mode    => $prometheus::config_mode,
+      source  => $_config_source,
+      require => File[$prometheus::config_dir],
+    }
   }
 
+  if $_config_template != undef {
+    file { 'prometheus.yaml':
+      ensure  => file,
+      path    => "${prometheus::config_dir}/prometheus.yaml",
+      owner   => $prometheus::user,
+      group   => $prometheus::group,
+      mode    => $prometheus::config_mode,
+      content => template($_config_template),
+      require => File[$prometheus::config_dir],
+    }
+  }
 }

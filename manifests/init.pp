@@ -67,8 +67,14 @@
 #  [*config_defaults*]
 #  Startup config defaults
 #
+#  [*config_source*]
+#  Configuration source to use (undef), default is to use config_template instead
+#
 #  [*config_template*]
 #  Configuration template to use (template/prometheus.yaml.erb)
+#
+#  [*config_type*]
+#  Type of config to use, could be template or source. (default template)
 #
 #  [*config_mode*]
 #  Configuration file mode (default 0660)
@@ -132,7 +138,9 @@ class prometheus (
   $extra_options        = '',
   $config_hash          = {},
   $config_defaults      = {},
+  $config_source        = $::prometheus::params::config_source,
   $config_template      = $::prometheus::params::config_template,
+  $config_type          = $::prometheus::params::config_type,
   $config_mode          = $::prometheus::params::config_mode,
   $service_enable       = true,
   $service_ensure       = 'running',
@@ -180,7 +188,9 @@ class prometheus (
     scrape_configs  => $scrape_configs,
     purge           => $purge_config_dir,
     notify          => $notify_service,
+    config_source   => $config_source,
     config_template => $config_template,
+    config_type     => $config_type,
   }
   -> class { '::prometheus::alerts':
     location => $config_dir,

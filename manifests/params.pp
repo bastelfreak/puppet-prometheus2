@@ -23,7 +23,9 @@ class prometheus::params {
   $bin_dir = '/usr/local/bin'
   $config_dir = '/etc/prometheus'
   $config_mode = '0660'
+  $config_source = undef
   $config_template = 'prometheus/prometheus.yaml.erb'
+  $config_type = 'template'
   $download_extension = 'tar.gz'
   $download_url_base = 'https://github.com/prometheus/prometheus/releases'
   $extra_groups = []
