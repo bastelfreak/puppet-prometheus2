@@ -1,14 +1,14 @@
-<% @alerts.sort!{ |a,b| b[:name] <=> a[:name] }.each do |alert| -%>
+<% @alerts.sort!{ |a,b| b['name'] <=> a['name'] }.each do |alert| -%>
 ALERT <%= alert['name'] %>
     IF <%= alert['condition'] %>
     FOR <%= alert['timeduration'] %>
     LABELS {
-    <% alert['labels'].sort!{ |a,b| b[:name] <=> a[:name] }.each do |label| -%>
+    <% alert['labels'].sort!{ |a,b| b['name'] <=> a['name'] }.each do |label| -%>
       <%= label['name'] %> = "<%= label['content'] %>",
     <% end -%>
     }
     ANNOTATIONS {
-    <% alert['annotations'].sort! { |a,b| b[:name] <=> a[:name] }.each do |annotation| -%>
+    <% alert['annotations'].sort!{ |a,b| b['name'] <=> a['name'] }.each do |annotation| -%>
       <%= annotation['name'] %> = "<%= annotation['content'] %>",
     <% end -%>
     }

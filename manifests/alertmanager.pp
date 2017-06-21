@@ -153,6 +153,7 @@ class prometheus::alertmanager (
   $route                = $::prometheus::params::alertmanager_route,
   $service_enable       = true,
   $service_ensure       = 'running',
+  $stop_legacy_service  = true,
   $storage_path         = $::prometheus::params::alertmanager_storage_path,
   $templates            = $::prometheus::params::alertmanager_templates,
   $user                 = $::prometheus::params::alertmanager_user,
@@ -197,8 +198,10 @@ class prometheus::alertmanager (
   }
 
   # This is here to stop the previous alertmanager that was installed in version 0.1.14
-  service { 'alert_manager':
-    ensure => 'stopped',
+  if $stop_legacy_service {
+    service { 'alert_manager':
+      ensure => 'stopped',
+    }
   }
 
   if $storage_path {
