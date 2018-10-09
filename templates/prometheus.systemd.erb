@@ -9,7 +9,7 @@ Group=<%= scope.lookupvar('prometheus::group') %>
 ExecStart=<%= scope.lookupvar('prometheus::bin_dir') %>/prometheus \
   --config.file=<%= scope.lookupvar('prometheus::config_dir')+'/prometheus.yaml' %>\
   --storage.tsdb.path=<%= scope.lookupvar('prometheus::localstorage')%> \
-  --storage.tsdb.retention<%= scope.lookupvar('prometheus::data_retention')%> \
+  --storage.tsdb.retention=<%= scope.lookupvar('prometheus::data_retention')%> \
   --web.console.templates=<%= scope.lookupvar('prometheus::shared_dir') %>/consoles \
   --web.console.libraries=<%= scope.lookupvar('prometheus::shared_dir') %>/console_libraries \
   <%= scope.lookupvar('prometheus::extra_options') %>
