@@ -106,7 +106,15 @@ class prometheus::statsd_exporter (
   $user                 = $::prometheus::params::statsd_exporter_user,
   $version              = $::prometheus::params::statsd_exporter_version,
 ) inherits prometheus::params {
-  $real_download_url    = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+  # Prometheus added a 'v' on the realease name at 0.4.0
+  if versioncmp ($version, '0.4.0') >= 0 {
+    $release = "v${version}"
+  }
+  else {
+    $release = $version
+  }
+  $real_download_url    = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+
   validate_bool($purge_config_dir)
   validate_bool($manage_user)
   validate_bool($manage_service)

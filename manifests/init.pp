@@ -37,6 +37,9 @@
 #  [*os*]
 #  Operating system (linux is supported)
 #
+#  [*data_retention*]
+#  Data retention policy (storage.tsdb.retention argument)
+#
 #  [*download_url*]
 #  Complete URL corresponding to the Prometheus release, default to undef
 #
@@ -116,6 +119,7 @@ class prometheus (
   $version              = $::prometheus::params::version,
   $install_method       = $::prometheus::params::install_method,
   $os                   = $::prometheus::params::os,
+  $data_retention       = $::prometheus::params::data_retention,
   $download_url         = undef,
   $download_url_base    = $::prometheus::params::download_url_base,
   $download_extension   = $::prometheus::params::download_extension,
