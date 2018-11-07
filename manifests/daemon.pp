@@ -224,7 +224,7 @@ define prometheus::daemon (
     file { "${env_file_path}/${name}":
       mode    => '0644',
       owner   => 'root',
-      group   => 'root',
+      group   => '0', # Darwin uses wheel
       content => template('prometheus/daemon.env.erb'),
       notify  => $notify_service,
     }
