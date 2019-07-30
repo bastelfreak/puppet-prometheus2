@@ -1,3 +1,4 @@
+# THIS FILE IS MANAGED BY PUPPET
 [Unit]
 Description=Prometheus <%= @name %>
 Wants=basic.target
@@ -15,6 +16,9 @@ ExecStart=<%= @bin_dir %>/<%= @bin_name %><% for option in Shellwords.split(@opt
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=always
+<% @additional_systemd_options.each do |name,value| %>
+<%= name -%>=<%= value -%>
+<% end %>
 
 [Install]
 WantedBy=multi-user.target
