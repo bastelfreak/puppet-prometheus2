@@ -6,3 +6,5 @@ prometheus::env_file_path: '/etc/default'
 prometheus::node_exporter::package_name: 'prometheus-node-exporter'
 prometheus::node_exporter::install_method: 'package'
 prometheus::node_exporter::bin_name: 'prometheus-node-exporter'
+prometheus::node_exporter::manage_user: false
+prometheus::node_exporter::manage_group: false
