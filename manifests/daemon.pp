@@ -148,6 +148,7 @@ define prometheus::daemon (
       ensure => 'present',
       system => true,
       groups => $extra_groups,
+      home   => '/',
     })
 
     if $manage_group {
