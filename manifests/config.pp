@@ -156,10 +156,9 @@ class prometheus::config {
 
     # the vast majority of files here are init-files
     # so any change there should trigger a full service restart
-    if $prometheus::server::restart_on_change {
-      $notify = Class['prometheus::run_service']
-    } else {
-      $notify = undef
+    $notify = $prometheus::server::restart_on_change ? {
+      true    => Class['prometheus::run_service'],
+      default => undef,
     }
 
     case $prometheus::server::init_style {
