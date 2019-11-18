@@ -94,6 +94,6 @@ class prometheus::server (
 
   Class['prometheus::install']
   -> Class['prometheus::config']
-  -> Class['prometheus::run_service']
+  -> Class['prometheus::run_service'] # Note: config must *not* be configured here to notify run_service.  Some resources in config.pp need to notify service_reload instead
   -> Class['prometheus::service_reload']
 }

@@ -185,7 +185,7 @@ describe 'prometheus' do
 
           it {
             is_expected.to contain_file('prometheus.yaml').with(
-              'ensure'  => 'present',
+              'ensure'  => 'file',
               'path'    => '/etc/prometheus/prometheus.yaml',
               'owner'   => 'root',
               'group'   => 'prometheus',
@@ -296,7 +296,7 @@ describe 'prometheus' do
             }
             it {
               is_expected.to contain_file('prometheus.yaml').with(
-                'ensure'  => 'present',
+                'ensure'  => 'file',
                 'path'    => '/etc/prometheus/prometheus.yaml',
                 'owner'   => 'root',
                 'group'   => 'prometheus',

@@ -31,7 +31,7 @@ define prometheus::scrape_job (
     },
   ])
   file { "${collect_dir}/${job_name}_${name}.yaml":
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => $prometheus::group,
     mode    => $prometheus::config_mode,

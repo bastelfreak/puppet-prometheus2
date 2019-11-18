@@ -157,21 +157,20 @@ class prometheus::config {
     # the vast majority of files here are init-files
     # so any change there should trigger a full service restart
     if $prometheus::server::restart_on_change {
-      File {
-        notify => Class['prometheus::run_service'],
-      }
-      $systemd_notify = [Exec['prometheus-systemd-reload'], Class['prometheus::run_service']]
+      $notify = Class['prometheus::run_service']
     } else {
-      $systemd_notify = Exec['prometheus-systemd-reload']
+      $notify = undef
     }
 
     case $prometheus::server::init_style {
       'upstart' : {
         file { '/etc/init/prometheus.conf':
+          ensure  => file,
           mode    => '0444',
           owner   => 'root',
           group   => 'root',
           content => template('prometheus/prometheus.upstart.erb'),
+          notify  => $notify,
         }
         file { '/etc/init.d/prometheus':
           ensure => link,
@@ -179,44 +178,37 @@ class prometheus::config {
           owner  => 'root',
           group  => 'root',
           mode   => '0755',
+          notify => $notify,
         }
       }
       'systemd' : {
-        include 'systemd'
         systemd::unit_file {'prometheus.service':
           content => template('prometheus/prometheus.systemd.erb'),
+          notify  => $notify,
         }
       }
-      'sysv', 'redhat' : {
+      'sysv', 'redhat', 'debian', 'sles' : {
+        $content = $prometheus::server::init_style ? {
+          'redhat' => template('prometheus/prometheus.sysv.erb'), # redhat and sysv share the same template file
+          default  => template("prometheus/prometheus.${prometheus::server::init_style}.erb"),
+        }
         file { '/etc/init.d/prometheus':
+          ensure  => file,
           mode    => '0555',
           owner   => 'root',
           group   => 'root',
-          content => template('prometheus/prometheus.sysv.erb'),
-        }
-      }
-      'debian' : {
-        file { '/etc/init.d/prometheus':
-          mode    => '0555',
-          owner   => 'root',
-          group   => 'root',
-          content => template('prometheus/prometheus.debian.erb'),
-        }
-      }
-      'sles' : {
-        file { '/etc/init.d/prometheus':
-          mode    => '0555',
-          owner   => 'root',
-          group   => 'root',
-          content => template('prometheus/prometheus.sles.erb'),
+          content => $content,
+          notify  => $notify,
         }
       }
       'launchd' : {
         file { '/Library/LaunchDaemons/io.prometheus.daemon.plist':
+          ensure  => file,
           mode    => '0644',
           owner   => 'root',
           group   => 'wheel',
           content => template('prometheus/prometheus.launchd.erb'),
+          notify  => $notify,
         }
       }
       default : {
@@ -232,6 +224,7 @@ class prometheus::config {
     group   => $prometheus::server::group,
     purge   => true,
     recurse => true,
+    notify  => Class['prometheus::service_reload'], # After purging, a reload is needed
   }
 
   $prometheus::server::collect_scrape_jobs.each |Hash $job_definition| {
@@ -265,7 +258,7 @@ class prometheus::config {
 
   if $prometheus::server::manage_config {
     file { 'prometheus.yaml':
-      ensure       => present,
+      ensure       => file,
       path         => "${prometheus::server::config_dir}/${prometheus::server::configname}",
       owner        => 'root',
       group        => $prometheus::server::group,
