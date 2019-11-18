@@ -186,6 +186,9 @@ class prometheus::config {
           content => template('prometheus/prometheus.systemd.erb'),
           notify  => $notify,
         }
+        if versioncmp($facts['puppetversion'],'6.1.0') < 0 {
+          Class['systemd::systemctl::daemon_reload'] -> Class['prometheus::run_service']
+        }
       }
       'sysv', 'redhat', 'debian', 'sles' : {
         $content = $prometheus::server::init_style ? {
