@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'prometheus server basics' do
   it 'prometheus server via main class works idempotently with no errors' do
-    pp = "class{'prometheus': manage_prometheus_server => true, version => '1.5.2' }"
+    pp = "class{'prometheus': manage_prometheus_server => true }"
 
     # Run it twice and test for idempotency
     apply_manifest(pp, catch_failures: true)
@@ -30,6 +30,29 @@ describe 'prometheus server basics' do
   end
   describe port(9090) do
     it { is_expected.to be_listening.with('tcp6') }
+  end
+
+  it 'does not allow admin API' do # rubocop:disable RSpec/MultipleExpectations
+    shell('curl -s -XPOST http://127.0.0.1:9090/api/v1/admin/tsdb/snapshot') do |r|
+      expect(r.stdout).to match(%r{admin APIs disabled})
+      expect(r.exit_code).to eq(0)
+    end
+  end
+
+  describe 'updating configuration to enable Admin API' do
+    it 'prometheus server via main class works idempotently with no errors' do
+      pp = "class{'prometheus': manage_prometheus_server => true, web_enable_admin_api => true }"
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+    it 'allows admin API' do # rubocop:disable RSpec/MultipleExpectations
+      shell('curl -s -XPOST http://127.0.0.1:9090/api/v1/admin/tsdb/snapshot') do |r|
+        expect(r.stdout).not_to match(%r{admin APIs disabled})
+        expect(r.stdout).to match(%r{success})
+        expect(r.exit_code).to eq(0)
+      end
+    end
   end
 
   describe 'prometheus server with options' do
